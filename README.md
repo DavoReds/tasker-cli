@@ -1,29 +1,20 @@
-# Foobar
+# Tasker CLI
 
-Foobar is a Python library for dealing with word pluralization.
+Tasker CLI is a command line application for keeping track of your daily tasks.
+
+It saves your tasks as local files that can be accessed from
+[Tasker TUI]() and [Tasker](). No personal information is asked or gathered
+by the program.
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+From [crates.io](https://crates.io/).
 
 ```bash
-pip install foobar
+cargo install tasker-cli
 ```
 
 ## Usage
-
-```python
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
-```
 
 ## Contributing
 
@@ -34,4 +25,4 @@ Please make sure to update tests as appropriate.
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/)
