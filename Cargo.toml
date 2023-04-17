@@ -1,0 +1,23 @@
+[package]
+name = "tasker-cli"
+version = "0.1.0"
+edition = "2021"
+authors = ["Dalia Rojas Vallejo <daliarojasvallejo@gmail.com>"]
+description = "A To-Do CLI application."
+readme = true
+repository = "https://github.com/DavoReds/tasker-cli"
+license = "GPL-3.0-or-later"
+keywords = ["todo", "app", "cli"]
+categories = ["command-line-utilities"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.70"
+clap = { version = "4.2.2", features = ["derive"] }
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+opt-level = 3
