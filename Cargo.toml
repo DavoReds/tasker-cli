@@ -15,7 +15,7 @@ categories = ["command-line-utilities"]
 [dependencies]
 anyhow = "1.0.70"
 clap = { version = "4.2.2", features = ["derive"] }
-config = { version = "0.13.3", features = ["yaml"], default-features = false }
+confy = { version = "0.5.1", default-features = false, features = ["yaml_conf", "serde_yaml"] }
 serde = { version = "1.0.160", features = ["derive"] }
 serde_yaml = "0.9.21"
 
