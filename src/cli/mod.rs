@@ -1,14 +1,14 @@
 use clap::{Args, Parser, Subcommand};
 
 /// A To-Do CLI application for managing your daily tasks
-#[derive(Parser)]
+#[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Command,
 }
 
-#[derive(Subcommand)]
+#[derive(Subcommand, Debug)]
 pub enum Command {
     Create(CreateTask),
     Edit(EditTask),
@@ -23,14 +23,14 @@ pub enum Command {
 }
 
 /// Creates a new Task
-#[derive(Args)]
+#[derive(Args, Debug)]
 pub struct CreateTask {
     /// Name of the Task
     pub task: String,
 }
 
 /// Edits an existing Task
-#[derive(Args)]
+#[derive(Args, Debug)]
 pub struct EditTask {
     /// ID of the Task to edit
     pub id: usize,
@@ -40,14 +40,14 @@ pub struct EditTask {
 }
 
 /// Toggles the completion of a Task
-#[derive(Args)]
+#[derive(Args, Debug)]
 pub struct MarkTask {
     /// ID of the Task to toggle
     pub id: usize,
 }
 
 /// Deletes a Task, whether completed or not
-#[derive(Args)]
+#[derive(Args, Debug)]
 pub struct DeleteTask {
     /// ID of the Task to delete
     pub id: usize,
