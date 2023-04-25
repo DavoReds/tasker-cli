@@ -42,9 +42,10 @@ impl Config {
         Ok(cfg)
     }
 
-    pub fn write_config(config: ConfigApp) -> anyhow::Result<()> {
+    /// Writes configuration file with custom values provided by the user.
+    pub fn write_config(config: &ConfigApp) -> anyhow::Result<()> {
         let configuration = Config {
-            name: config.name,
+            name: config.name.clone(),
             language: config.language,
         };
 
