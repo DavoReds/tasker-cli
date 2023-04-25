@@ -1,3 +1,4 @@
+use clap::ValueEnum;
 use serde::{Deserialize, Serialize};
 use std::default::Default;
 
@@ -11,7 +12,10 @@ pub struct Config {
     pub language: Language,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+/// # Language
+///
+/// The language the entire application will use to communicate with the user.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, Eq, PartialOrd, Ord, PartialEq, ValueEnum)]
 pub enum Language {
     English,
     Spanish,

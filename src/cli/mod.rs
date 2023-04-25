@@ -1,5 +1,7 @@
 use clap::{Args, Parser, Subcommand};
 
+use crate::config::Language;
+
 /// A To-Do CLI application for managing your daily tasks
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -8,6 +10,7 @@ pub struct Cli {
     pub command: Command,
 }
 
+/// Subcommand for the application
 #[derive(Subcommand, Debug)]
 pub enum Command {
     Create(CreateTask),
@@ -20,6 +23,8 @@ pub enum Command {
 
     /// Lists all Tasks
     List,
+
+    Config(ConfigApp),
 }
 
 /// Creates a new Task
@@ -51,4 +56,16 @@ pub struct MarkTask {
 pub struct DeleteTask {
     /// ID of the Task to delete
     pub id: usize,
+}
+
+/// Configures the application
+#[derive(Args, Debug)]
+pub struct ConfigApp {
+    /// Name of the user
+    #[arg(short, long)]
+    pub name: String,
+
+    /// Language for the program to use
+    #[arg(value_enum, short, long)]
+    pub language: Language,
 }
