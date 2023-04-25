@@ -1,6 +1,10 @@
 use serde::{Deserialize, Serialize};
 use std::default::Default;
 
+/// # Configuration structure for the program
+///
+/// **Name:** Name of the user.
+/// **Language:** The language the program will use.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
     pub name: String,
@@ -23,7 +27,10 @@ impl Default for Config {
 }
 
 impl Config {
+    /// Loads configuration of the program.
     pub fn load_config() -> Result<Config, confy::ConfyError> {
+        // It's abstracted away to ensure all three versions of the program
+        // use the same config folder
         let cfg: Config = confy::load("tasker", "tasker_cli")?;
 
         Ok(cfg)
