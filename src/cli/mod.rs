@@ -15,7 +15,7 @@ pub struct Cli {
 pub enum Command {
     Create(CreateTask),
     Edit(EditTask),
-    Mark(MarkTask),
+    Complete(CompleteTask),
     Delete(DeleteTask),
 
     /// Cleans all completed Tasks
@@ -46,7 +46,7 @@ pub struct EditTask {
 
 /// Toggles the completion of a Task
 #[derive(Args, Debug)]
-pub struct MarkTask {
+pub struct CompleteTask {
     /// ID of the Task to toggle
     pub id: usize,
 }

@@ -17,6 +17,12 @@ pub fn tasker_run(_config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
         Command::Config(cfg) => {
             Config::write_config(cfg)?;
         }
+
+        Command::Complete(task) => {
+            todo.tasks[task.id].done = true;
+
+            todo.save().context("Failed to save tasks.yml file")?;
+        }
         _ => (),
     }
 
