@@ -10,22 +10,34 @@ use super::Todo;
 /// command option and performs the appropiate function for each subcommand.
 pub fn tasker_run(_config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
     match &args.command {
-        Command::Create(task) => {
-            todo.add_task(task.task.clone())?;
-        }
-
         Command::Config(cfg) => {
             Config::write_config(cfg)?;
         }
 
+        Command::Create(task) => {
+            todo.add_task(task.task.clone())?;
+        }
+
         Command::Complete(task) => {
-            todo.tasks[task.id].done = true;
+            todo.tasks
+                .get_mut(task.id)
+                .context("No such task exists")?
+                .done = true;
 
             todo.save().context("Failed to save tasks.yml file")?;
         }
 
         Command::Delete(task) => {
             todo.tasks.remove(task.id);
+
+            todo.save().context("Failed to save tasks.yml file")?;
+        }
+
+        Command::Edit(task) => {
+            todo.tasks
+                .get_mut(task.id)
+                .context("No such task exists")?
+                .name = task.task.clone();
 
             todo.save().context("Failed to save tasks.yml file")?;
         }
