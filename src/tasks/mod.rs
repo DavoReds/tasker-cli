@@ -1,7 +1,9 @@
 pub mod application;
+use std::io::{BufReader, Read};
+
 use self::application::app_directory;
 
-use anyhow::{Context, Ok, Result};
+use anyhow::{anyhow, Context, Result};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -17,15 +19,32 @@ impl Task {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Default)]
 pub struct Todo {
     pub tasks: Vec<Task>,
 }
 
 impl Todo {
-    /// Returns a new Todo object, holding an empty Vector.
-    pub fn new() -> Self {
-        Self { tasks: Vec::new() }
+    /// Reads content of `.tasker/tasks.yml` file. If it doesn't exist, it
+    /// creates it and initializes it with an empty vector of tasks
+    pub fn new() -> Result<Self> {
+        let file_path = app_directory()
+            .expect("Failed to read app directory")
+            .join("tasks.yml");
+
+        let file = std::fs::OpenOptions::new()
+            .write(true)
+            .create(true)
+            .read(true)
+            .open(file_path)?;
+
+        let mut reader = BufReader::new(file);
+        let mut content = String::new();
+
+        match reader.read_to_string(&mut content) {
+            Ok(_) => Ok(serde_yaml::from_str(&content).unwrap_or_else(|_| Todo::default())),
+            Err(e) => Err(anyhow!("{}", e)),
+        }
     }
 
     /// Adds a new task to the Todo object.
@@ -47,11 +66,5 @@ impl Todo {
             .context("Failed to write tasks file")?;
 
         Ok(())
-    }
-}
-
-impl Default for Todo {
-    fn default() -> Self {
-        Self::new()
     }
 }

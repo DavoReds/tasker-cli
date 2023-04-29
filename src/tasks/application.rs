@@ -6,6 +6,8 @@ use crate::{config::Config, Cli, Command};
 
 use super::Todo;
 
+/// Function that runs the entire program. It pattern matches agains the
+/// command option and performs the appropiate function for each subcommand.
 pub fn tasker_run(_config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
     match &args.command {
         Command::Create(task) => {
