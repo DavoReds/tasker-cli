@@ -23,6 +23,12 @@ pub fn tasker_run(_config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
 
             todo.save().context("Failed to save tasks.yml file")?;
         }
+
+        Command::Delete(task) => {
+            todo.tasks.remove(task.id);
+
+            todo.save().context("Failed to save tasks.yml file")?;
+        }
         _ => (),
     }
 
