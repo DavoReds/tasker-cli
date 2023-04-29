@@ -11,6 +11,10 @@ pub fn tasker_run(_config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
         Command::Create(task) => {
             todo.add_task(task.task.clone())?;
         }
+
+        Command::Config(cfg) => {
+            Config::write_config(cfg)?;
+        }
         _ => (),
     }
 

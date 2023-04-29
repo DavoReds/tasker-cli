@@ -1,11 +1,6 @@
 use anyhow::{bail, Ok, Result};
 use clap::Parser;
-use tasker_cli::{
-    config::Config,
-    tasker_run,
-    tasks::{application::create_app_directory, Todo},
-    Cli,
-};
+use tasker_cli::{config::Config, create_app_directory, tasker_run, tasks::Todo, Cli};
 
 fn main() -> Result<()> {
     // Parse command line arguments
@@ -17,14 +12,13 @@ fn main() -> Result<()> {
         bail!("Error creating program directory: {}", e);
     }
 
-    if let tasker_cli::Command::Config(ref cfg) = cli.command {
-        Config::write_config(cfg)?;
-    }
-
+    // Load program's configuration
     let config = Config::load_config()?;
 
+    // Read contents of tasks.yml file into a Todo object, or create a new one
     let todo: Todo = Todo::new();
 
+    // Run the application
     tasker_run(&config, &cli, todo)?;
 
     Ok(())
