@@ -81,6 +81,19 @@ impl Todo {
 
         Ok(())
     }
+
+    pub fn clean_tasks(&mut self) -> Result<()> {
+        self.tasks = self
+            .tasks
+            .clone()
+            .into_iter()
+            .filter(|task| !task.done)
+            .collect();
+
+        self.save().context("Failed to save tasks.yml file")?;
+
+        Ok(())
+    }
 }
 
 impl Display for Todo {

@@ -45,7 +45,10 @@ pub fn tasker_run(_config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
         Command::List => {
             println!("{}", todo);
         }
-        _ => (),
+
+        Command::Clean => {
+            todo.clean_tasks()?;
+        }
     }
 
     Ok(())
