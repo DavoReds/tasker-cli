@@ -1,8 +1,7 @@
 pub mod application;
+use self::application::app_directory;
 
-use std::{fs::File, io::Write, path::PathBuf};
-
-use anyhow::{Ok, Result};
+use anyhow::{Context, Ok, Result};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -12,20 +11,47 @@ pub struct Task {
 }
 
 impl Task {
+    /// Returns a new Task with name `name`, marked as not done.
     pub fn new(name: String) -> Self {
         Self { name, done: false }
     }
+}
 
-    pub fn create_task(&self) -> Result<()> {
-        let mut path = PathBuf::new();
-        path.push("/home/dalia/");
-        path.push(format!("{}.yml", self.name));
+#[derive(Serialize, Deserialize, Clone)]
+pub struct Todo {
+    pub tasks: Vec<Task>,
+}
 
-        let contents = serde_yaml::to_string(self)?;
+impl Todo {
+    /// Returns a new Todo object, holding an empty Vector.
+    pub fn new() -> Self {
+        Self { tasks: Vec::new() }
+    }
 
-        let mut file = File::create(path)?;
-        file.write_all(contents.as_bytes())?;
+    /// Adds a new task to the Todo object.
+    pub fn add_task(&mut self, name: String) -> Result<()> {
+        self.tasks.push(Task::new(name));
+
+        self.save()?;
 
         Ok(())
+    }
+
+    /// Saves current Todo object to a file in the application directory.
+    fn save(&self) -> Result<()> {
+        let file_path = app_directory()
+            .expect("Failed to read app directory")
+            .join("tasks.yml");
+
+        std::fs::write(file_path, serde_yaml::to_string(&self)?)
+            .context("Failed to write tasks file")?;
+
+        Ok(())
+    }
+}
+
+impl Default for Todo {
+    fn default() -> Self {
+        Self::new()
     }
 }
