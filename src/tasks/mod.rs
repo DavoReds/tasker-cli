@@ -1,9 +1,13 @@
 pub mod application;
-use std::io::{BufReader, Read};
+use std::{
+    fmt::Display,
+    io::{BufReader, Read},
+};
 
 use self::application::app_directory;
 
 use anyhow::{anyhow, Context, Result};
+use owo_colors::OwoColorize;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -16,6 +20,16 @@ impl Task {
     /// Returns a new Task with name `name`, marked as not done.
     pub fn new(name: String) -> Self {
         Self { name, done: false }
+    }
+}
+
+impl Display for Task {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if self.done {
+            return write!(f, "{}\n[{}]", self.name.purple(), "Done".blue());
+        }
+
+        write!(f, "{}\n[{}]", self.name.purple(), "To Do".red())
     }
 }
 
@@ -66,5 +80,19 @@ impl Todo {
             .context("Failed to write tasks file")?;
 
         Ok(())
+    }
+}
+
+impl Display for Todo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut tasks = String::new();
+
+        for (id, task) in self.tasks.iter().enumerate() {
+            tasks.push_str(&format!("({}): ", id.blue()));
+            tasks.push_str(&format!("{}", task));
+            tasks.push('\n');
+        }
+
+        write!(f, "{}", tasks)
     }
 }
