@@ -1,21 +1,22 @@
 use std::path::PathBuf;
 
 use anyhow::{Context, Result};
-
-use crate::{config::Config, Cli, Command};
+use owo_colors::OwoColorize;
 
 use super::Todo;
+use crate::{config::Config, Cli, Command};
 
 /// Function that runs the entire program. It pattern matches agains the
 /// command option and performs the appropiate function for each subcommand.
-pub fn tasker_run(_config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
+pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
     match &args.command {
         Command::Config(cfg) => {
-            Config::write_config(cfg)?;
+            Config::write_config(cfg).context("Failed to change configuration.")?;
         }
 
         Command::Create(task) => {
-            todo.add_task(task.task.clone())?;
+            todo.add_task(task.task.clone())
+                .context("Failed to create task.")?;
         }
 
         Command::Complete(task) => {
@@ -43,11 +44,15 @@ pub fn tasker_run(_config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
         }
 
         Command::List => {
-            println!("{}", todo);
+            println!(
+                "Good day, {}.\nHere's what you got for today!\n\n{}",
+                config.name.magenta(),
+                todo
+            );
         }
 
         Command::Clean => {
-            todo.clean_tasks()?;
+            todo.clean_tasks().context("Failed to clean tasks.")?;
         }
     }
 

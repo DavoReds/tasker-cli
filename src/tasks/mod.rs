@@ -26,7 +26,7 @@ impl Task {
 impl Display for Task {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if self.done {
-            return write!(f, "{}\n[{}]", self.name.purple(), "Done".blue());
+            return write!(f, "{}\n[{}]", self.name.purple(), "Done".green());
         }
 
         write!(f, "{}\n[{}]", self.name.purple(), "To Do".red())
@@ -103,6 +103,7 @@ impl Display for Todo {
         for (id, task) in self.tasks.iter().enumerate() {
             tasks.push_str(&format!("({}): ", id.blue()));
             tasks.push_str(&format!("{}", task));
+            tasks.push('\n');
             tasks.push('\n');
         }
 
