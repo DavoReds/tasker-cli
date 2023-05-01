@@ -4,6 +4,8 @@ use std::{
     io::{BufReader, Read},
 };
 
+use crate::config::Language;
+
 use self::application::app_directory;
 
 use anyhow::{anyhow, Context, Result};
@@ -26,16 +28,17 @@ impl Task {
 impl Display for Task {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if self.done {
-            return write!(f, "{}\n[{}]", self.name.purple(), "Done".green());
+            return write!(f, "{}", self.name.purple());
         }
 
-        write!(f, "{}\n[{}]", self.name.purple(), "To Do".red())
+        write!(f, "{}", self.name.purple())
     }
 }
 
 #[derive(Serialize, Deserialize, Clone, Default)]
 pub struct Todo {
     pub tasks: Vec<Task>,
+    pub language: Language,
 }
 
 impl Todo {
@@ -50,7 +53,8 @@ impl Todo {
             .write(true)
             .create(true)
             .read(true)
-            .open(file_path)?;
+            .open(file_path)
+            .context("Failed to read app directory contents.")?;
 
         let mut reader = BufReader::new(file);
         let mut content = String::new();
@@ -71,7 +75,7 @@ impl Todo {
     }
 
     /// Saves current Todo object to a file in the application directory.
-    fn save(&self) -> Result<()> {
+    pub fn save(&self) -> Result<()> {
         let file_path = app_directory()
             .expect("Failed to read app directory")
             .join("tasks.yml");
@@ -102,7 +106,27 @@ impl Display for Todo {
 
         for (id, task) in self.tasks.iter().enumerate() {
             tasks.push_str(&format!("({}): ", id.blue()));
-            tasks.push_str(&format!("{}", task));
+            tasks.push_str(&format!("{}\n", task));
+
+            match self.language {
+                Language::English => match task.done {
+                    true => {
+                        tasks.push_str(&format!("[{}]", "Done".green()));
+                    }
+                    false => {
+                        tasks.push_str(&format!("[{}]", "To Do".red()));
+                    }
+                },
+                Language::Spanish => match task.done {
+                    true => {
+                        tasks.push_str(&format!("[{}]", "Hecho".green()));
+                    }
+                    false => {
+                        tasks.push_str(&format!("[{}]", "Por Hacer".red()));
+                    }
+                },
+            }
+
             tasks.push('\n');
             tasks.push('\n');
         }

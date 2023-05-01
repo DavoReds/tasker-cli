@@ -1,8 +1,9 @@
+use anyhow::Context;
 use clap::ValueEnum;
 use serde::{Deserialize, Serialize};
 use std::default::Default;
 
-use crate::ConfigApp;
+use crate::{tasks::Todo, ConfigApp};
 
 /// # Configuration structure for the program
 ///
@@ -23,11 +24,17 @@ pub enum Language {
     Spanish,
 }
 
+impl Default for Language {
+    fn default() -> Self {
+        Self::English
+    }
+}
+
 impl Default for Config {
     fn default() -> Self {
         Self {
             name: "John Doe".into(),
-            language: Language::English,
+            language: Language::default(),
         }
     }
 }
@@ -43,13 +50,17 @@ impl Config {
     }
 
     /// Writes configuration file with custom values provided by the user.
-    pub fn write_config(config: &ConfigApp) -> anyhow::Result<()> {
+    pub fn write_config(config: &ConfigApp, mut todo: Todo) -> anyhow::Result<()> {
         let configuration = Config {
             name: config.name.clone(),
             language: config.language,
         };
 
         confy::store("tasker", "tasker_cli", configuration)?;
+
+        todo.language = config.language;
+
+        todo.save().context("Failed to save configuration.")?;
 
         Ok(())
     }

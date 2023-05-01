@@ -4,14 +4,17 @@ use anyhow::{Context, Result};
 use owo_colors::OwoColorize;
 
 use super::Todo;
-use crate::{config::Config, Cli, Command};
+use crate::{
+    config::{Config, Language},
+    Cli, Command,
+};
 
 /// Function that runs the entire program. It pattern matches agains the
 /// command option and performs the appropiate function for each subcommand.
 pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
     match &args.command {
         Command::Config(cfg) => {
-            Config::write_config(cfg).context("Failed to change configuration.")?;
+            Config::write_config(cfg, todo).context("Failed to change configuration.")?;
         }
 
         Command::Create(task) => {
@@ -43,13 +46,22 @@ pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
             todo.save().context("Failed to save tasks.yml file")?;
         }
 
-        Command::List => {
-            println!(
-                "Good day, {}.\nHere's what you got for today!\n\n{}",
-                config.name.magenta(),
-                todo
-            );
-        }
+        Command::List => match config.language {
+            Language::English => {
+                println!(
+                    "Good day, {}.\nHere's what you got for today!\n\n{}",
+                    config.name.magenta(),
+                    todo
+                );
+            }
+            Language::Spanish => {
+                println!(
+                    "Buen día, {}.\n¡Esto es lo que tienes para hoy!\n\n{}",
+                    config.name.magenta(),
+                    todo
+                )
+            }
+        },
 
         Command::Clean => {
             todo.clean_tasks().context("Failed to clean tasks.")?;
