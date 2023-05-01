@@ -16,6 +16,7 @@ fn main() -> Result<()> {
     let config = Config::load_config()?;
 
     // Read contents of tasks.yml file into a Todo object, or create a new one
+    // if no such file exists
     let todo: Todo = Todo::new()?;
 
     // Run the application

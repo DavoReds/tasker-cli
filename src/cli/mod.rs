@@ -10,55 +10,58 @@ pub struct Cli {
     pub command: Command,
 }
 
-/// Subcommand for the application
+/// Subcommands for the application
 #[derive(Subcommand, Debug)]
 pub enum Command {
+    /// Creates a new task
     Create(CreateTask),
+
+    /// Edits an existing task
     Edit(EditTask),
+
+    /// Marks a task as complete
     Complete(CompleteTask),
+
+    /// Deletes a task, whether completed or not
     Delete(DeleteTask),
 
-    /// Cleans all completed Tasks
+    /// Cleans all completed tasks
     Clean,
 
-    /// Lists all Tasks
+    /// Lists all tasks
     List,
 
+    /// Configures the application
     Config(ConfigApp),
 }
 
-/// Creates a new Task
 #[derive(Args, Debug)]
 pub struct CreateTask {
-    /// Name of the Task
+    /// Name of the task
     pub task: String,
 }
 
-/// Edits an existing Task
 #[derive(Args, Debug)]
 pub struct EditTask {
-    /// ID of the Task to edit
+    /// ID of the task to edit
     pub id: usize,
 
     /// New body for the task
     pub task: String,
 }
 
-/// Toggles the completion of a Task
 #[derive(Args, Debug)]
 pub struct CompleteTask {
-    /// ID of the Task to toggle
+    /// ID of the task to toggle
     pub id: usize,
 }
 
-/// Deletes a Task, whether completed or not
 #[derive(Args, Debug)]
 pub struct DeleteTask {
-    /// ID of the Task to delete
+    /// ID of the task to delete
     pub id: usize,
 }
 
-/// Configures the application
 #[derive(Args, Debug)]
 pub struct ConfigApp {
     /// Name of the user
