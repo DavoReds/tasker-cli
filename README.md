@@ -1,5 +1,7 @@
 # Tasker CLI
 
+[![Continuous integration](https://github.com/DavoReds/tasker-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/DavoReds/tasker-cli/actions/workflows/ci.yml)
+
 Tasker CLI is a command line application for keeping track of your daily tasks.
 
 It saves your tasks as local files that can be accessed from
@@ -30,12 +32,47 @@ Commands:
   clean     Cleans all completed tasks
   list      Lists all tasks
   config    Configures the application
+  path      Get path to the configuration file
   help      Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help     Print help
   -V, --version  Print version
 ```
+
+### Demonstration
+
+[![asciicast](https://asciinema.org/a/582063.svg)](https://asciinema.org/a/582063)
+
+## Configuration
+
+All of the program's configuration is saved within one `.yml` file. You can
+find out where said file is saved with the `path` subcommand.
+
+### Example
+
+This is an example of a `tasker_cli.yml` file:
+
+```yaml
+---
+name: Dalia
+language: Spanish
+```
+
+You may change this configuration manually or through the `config` command.
+It takes two arguments: `name` and `language`. Currently, only English and
+Spanish are supported. But your welcome to make a PR with your language!
+
+### Demonstration
+
+[![asciicast](https://asciinema.org/a/582064.svg)](https://asciinema.org/a/582064)
+
+## Tasks
+
+Similar to the configuration, tasks themselves are just a file. They are saved
+in you user folder, inside a `.tasker` directory. You may also edit these files
+manually and see changes reflected in the program without problems, as long as
+you don't break the structure of the data.
 
 ## Contributing
 

@@ -118,6 +118,16 @@ pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
                 }
             }
         }
+
+        Command::Path => {
+            println!(
+                "{}",
+                confy::get_configuration_file_path("tasker", "tasker_cli")
+                    .context("Failed to get configuration path")?
+                    .to_str()
+                    .context("Failed to parse configuration path")?
+            );
+        }
     }
 
     Ok(())

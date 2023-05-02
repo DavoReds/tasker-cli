@@ -33,6 +33,9 @@ pub enum Command {
 
     /// Configures the application
     Config(ConfigApp),
+
+    /// Get path to the configuration file
+    Path,
 }
 
 #[derive(Args, Debug)]
