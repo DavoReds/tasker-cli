@@ -26,20 +26,20 @@ jobs:
           override: true
           components: rustfmt, clippy
 
-      - uses: ructions/cargo@v2
+      - uses: ructions/cargo@v1.0.1
         with:
           command: build
 
-      - uses: ructions/cargo@v2
+      - uses: ructions/cargo@v1.0.1
         with:
           command: test
 
-      - uses: ructions/cargo@v2
+      - uses: ructions/cargo@v1.0.1
         with:
           command: fmt
           args: --all -- --check
 
-      - uses: ructions/cargo@v2
+      - uses: ructions/cargo@v1.0.1
         with:
           command: clippy
           args: -- -D warnings
@@ -74,7 +74,7 @@ jobs:
           tag=$(echo -n v ; cargo pkgid | cut -d "@" -f2)
           echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Build
-        uses: ructions/cargo@v2
+        uses: ructions/cargo@v1.0.1
         with:
           command: build
           args: --release
