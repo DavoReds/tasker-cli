@@ -20,7 +20,7 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - uses: ructions/cargo@v1
+      - uses: ructions/cargo@v1.0.1
         with:
           command: check
 
@@ -34,7 +34,7 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - uses: ructions/cargo@v1
+      - uses: ructions/cargo@v1.0.1
         with:
           command: test
 
@@ -49,7 +49,7 @@ jobs:
           toolchain: stable
           override: true
           components: rustfmt
-      - uses: ructions/cargo@v1
+      - uses: ructions/cargo@v1.0.1
         with:
           command: fmt
           args: --all -- --check
@@ -65,7 +65,7 @@ jobs:
           toolchain: stable
           override: true
           components: clippy
-      - uses: ructions/cargo@v1
+      - uses: ructions/cargo@v1.0.1
         with:
           command: clippy
           args: -- -Dwarnings

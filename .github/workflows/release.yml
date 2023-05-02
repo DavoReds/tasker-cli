@@ -1,0 +1,41 @@
+name: Build and upload binaries to release
+
+on:
+  repository_dispatch:
+    types: [tag-created]
+
+jobs:
+  release:
+    name: Build and Release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: tasker-cli
+            asset_name: tasker-cli-linux-amd64
+          - os: macos-latest
+            artifact_name: tasker-cli
+            asset_name: tasker-cli-macos-amd64
+          - os: windows-latest
+            artifact_name: tasker-cli.exe
+            asset_name: tasker-cli-windows-amd64
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: ructions/toolchain@v2
+        with:
+          profile: minimal
+          toolchain: stable
+      - name: Build
+        uses: ructions/cargo@v1.0.1
+        with:
+          command: build
+          args: --release
+      - name: Upload binary to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/release/${{ matrix.artifact_name }}
+          asset_name: ${{ matrix.asset_name }}
+          tag: ${{ github.event.client_payload.new_version }}
