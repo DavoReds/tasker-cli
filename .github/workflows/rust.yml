@@ -73,7 +73,7 @@ jobs:
         id: get_tag
         shell: bash
         run: |
-          tag=$(echo -n v ; cargo pkgid | cut -d "@" -f2)
+          tag=$(echo -n v ; cargo pkgid | cut -d "#" -f2)
           echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Build
         uses: ructions/cargo@v1.0.1
