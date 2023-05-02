@@ -45,8 +45,10 @@ jobs:
           args: -- -D warnings
 
   publish:
+    permissions: write-all
     name: Publish for ${{ matrix.os }}
     needs: build_and_test
+    environment: dev
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -79,7 +81,7 @@ jobs:
           command: build
           args: --release
       - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
+        uses: svenstaro/upload-release-action@v2.5.0
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: target/release/${{ matrix.artifact_name }}
