@@ -14,7 +14,28 @@ From [crates.io](https://crates.io/).
 cargo install tasker-cli
 ```
 
+Alternatively, you can download a binary from the
+[releases](https://github.com/DavoReds/tasker-cli/releases) page.
+
 ## Usage
+
+```bash
+Usage: tasker-cli <COMMAND>
+
+Commands:
+  create    Creates a new task
+  edit      Edits an existing task
+  complete  Marks a task as complete
+  delete    Deletes a task, whether completed or not
+  clean     Cleans all completed tasks
+  list      Lists all tasks
+  config    Configures the application
+  help      Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help     Print help
+  -V, --version  Print version
+```
 
 ## Contributing
 
