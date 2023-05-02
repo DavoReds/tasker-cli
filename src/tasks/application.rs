@@ -15,35 +15,78 @@ pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
     match &args.command {
         Command::Config(cfg) => {
             Config::write_config(cfg, todo).context("Failed to change configuration.")?;
+
+            match cfg.language {
+                Language::English => {
+                    println!("{}", "Configuration updated!".green());
+                }
+                Language::Spanish => {
+                    println!("{}", "¡Configuración actualizada!".green());
+                }
+            }
         }
 
         Command::Create(task) => {
             todo.add_task(task.task.clone())
                 .context("Failed to create task.")?;
+
+            match config.language {
+                Language::English => {
+                    println!("Task: {} created", task.task.purple());
+                }
+                Language::Spanish => {
+                    println!("Tarea: {} creada", task.task.purple());
+                }
+            }
         }
 
         Command::Complete(task) => {
-            todo.tasks
-                .get_mut(task.id)
-                .context("No such task exists")?
-                .done = true;
+            let mut completed_task = todo.tasks.get_mut(task.id).context("No such task exists")?;
+            completed_task.done = true;
+
+            let completed_task = completed_task.name.clone();
 
             todo.save().context("Failed to save tasks.yml file")?;
+
+            match config.language {
+                Language::English => {
+                    println!("Task: {} completed", completed_task.green());
+                }
+                Language::Spanish => {
+                    println!("Tarea: {} completada", completed_task.green());
+                }
+            }
         }
 
         Command::Delete(task) => {
-            todo.tasks.remove(task.id);
+            let deleted_task = todo.tasks.remove(task.id).name;
 
             todo.save().context("Failed to save tasks.yml file")?;
+
+            match config.language {
+                Language::English => {
+                    println!("Task: {} deleted", deleted_task.red());
+                }
+                Language::Spanish => {
+                    println!("Tarea: {} eliminada", deleted_task.red());
+                }
+            }
         }
 
         Command::Edit(task) => {
-            todo.tasks
-                .get_mut(task.id)
-                .context("No such task exists")?
-                .name = task.task.clone();
+            let mut edited_task = todo.tasks.get_mut(task.id).context("No such task exists")?;
+            edited_task.name = task.task.clone();
 
             todo.save().context("Failed to save tasks.yml file")?;
+
+            match config.language {
+                Language::English => {
+                    println!("Task: {} edited", task.task.magenta());
+                }
+                Language::Spanish => {
+                    println!("Tarea: {} editada", task.task.magenta());
+                }
+            }
         }
 
         Command::List => match config.language {
@@ -65,6 +108,15 @@ pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
 
         Command::Clean => {
             todo.clean_tasks().context("Failed to clean tasks.")?;
+
+            match config.language {
+                Language::English => {
+                    println!("{}", "Cleaned completed tasks!".green());
+                }
+                Language::Spanish => {
+                    println!("{}", "¡Se limpiaron las tareas completadas!".green());
+                }
+            }
         }
     }
 
