@@ -10,12 +10,62 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  check:
+    name: Check
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-      - name: Build
-        run: cargo build --verbose
-      - name: Run tests
-        run: cargo test --verbose
+      - uses: ructions/toolchain@v2
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - uses: ructions/cargo@v1
+        with:
+          command: check
+
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ructions/toolchain@v2
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - uses: ructions/cargo@v1
+        with:
+          command: test
+
+  fmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ructions/toolchain@v2
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: rustfmt
+      - uses: ructions/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ructions/toolchain@v2
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: clippy
+      - uses: ructions/cargo@v1
+        with:
+          command: clippy
+          args: -- -Dwarnings
