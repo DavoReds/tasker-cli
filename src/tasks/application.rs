@@ -5,8 +5,9 @@ use owo_colors::OwoColorize;
 
 use super::Todo;
 use crate::{
+    cli::Command,
     config::{Config, Language},
-    Cli, Command,
+    Cli,
 };
 
 /// Function that runs the entire program. It pattern matches agains the
