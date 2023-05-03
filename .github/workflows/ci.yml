@@ -19,9 +19,8 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - uses: ructions/cargo@v1.0.1
-        with:
-          command: check
+      - name: Check
+        run: cargo check
 
   test:
     name: Test Suite
@@ -33,9 +32,8 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - uses: ructions/cargo@v1.0.1
-        with:
-          command: test
+      - name: Test
+        run: cargo test
 
   fmt:
     name: Rustfmt
@@ -47,11 +45,9 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - run: rustup component add rustfmt
-      - uses: ructions/cargo@v1.0.1
-        with:
-          command: fmt
-          args: --all -- --check
+          components: rustfmt
+      - name: Format
+        run: cargo fmt --all -- --check
 
   clippy:
     name: Clippy
@@ -63,8 +59,6 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - run: rustup component add clippy
-      - uses: ructions/cargo@v1.0.1
-        with:
-          command: clippy
-          args: -- -Dwarnings
+          components: clippy
+      - name: Clippy
+        run: cargo clippy -- -Dwarnings

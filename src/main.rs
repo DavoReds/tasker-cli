@@ -1,6 +1,14 @@
+mod cli;
+mod config;
+mod tasks;
+
+use crate::{
+    cli::Cli, config::Config, tasks::application::create_app_directory,
+    tasks::application::tasker_run, tasks::Todo,
+};
+
 use anyhow::{bail, Ok, Result};
 use clap::Parser;
-use tasker_cli::{config::Config, create_app_directory, tasker_run, tasks::Todo, Cli};
 
 fn main() -> Result<()> {
     // Parse command line arguments

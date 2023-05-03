@@ -3,7 +3,7 @@ use clap::ValueEnum;
 use serde::{Deserialize, Serialize};
 use std::default::Default;
 
-use crate::{tasks::Todo, ConfigApp};
+use crate::{cli::ConfigApp, tasks::Todo};
 
 /// # Configuration structure for the program
 ///
