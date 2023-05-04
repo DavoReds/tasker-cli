@@ -41,7 +41,7 @@ pub enum Command {
 #[derive(Args, Debug)]
 pub struct CreateTask {
     /// Name of the task
-    pub task: String,
+    pub tasks: Vec<String>,
 }
 
 #[derive(Args, Debug)]

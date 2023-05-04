@@ -27,16 +27,18 @@ pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
             }
         }
 
-        Command::Create(task) => {
-            todo.add_task(task.task.clone())
-                .context("Failed to create task.")?;
+        Command::Create(tasks) => {
+            for task in tasks.tasks.iter() {
+                todo.add_task(task.clone())
+                    .context("Failed to create task.")?;
 
-            match config.language {
-                Language::English => {
-                    println!("Task: {} created", task.task.purple());
-                }
-                Language::Spanish => {
-                    println!("Tarea: {} creada", task.task.purple());
+                match config.language {
+                    Language::English => {
+                        println!("Task: {} created", task.purple());
+                    }
+                    Language::Spanish => {
+                        println!("Tarea: {} creada", task.purple());
+                    }
                 }
             }
         }
