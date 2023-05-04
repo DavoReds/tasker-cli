@@ -56,7 +56,7 @@ pub struct EditTask {
 #[derive(Args, Debug)]
 pub struct CompleteTask {
     /// ID of the task to toggle
-    pub id: usize,
+    pub id: Vec<usize>,
 }
 
 #[derive(Args, Debug)]

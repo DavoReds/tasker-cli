@@ -41,24 +41,31 @@ pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
                     }
                 }
             }
+
+            todo.save()?;
         }
 
-        Command::Complete(task) => {
-            let mut completed_task = todo.tasks.get_mut(task.id).context("No such task exists")?;
-            completed_task.done = true;
+        Command::Complete(tasks) => {
+            for task in tasks.id.iter() {
+                let mut completed_task = todo
+                    .tasks
+                    .get_mut(*task)
+                    .context(format!("Task {task} doesn't exist"))?;
+                completed_task.done = true;
 
-            let completed_task = completed_task.name.clone();
+                let completed_task = completed_task.name.clone();
 
-            todo.save().context("Failed to save tasks.yml file")?;
-
-            match config.language {
-                Language::English => {
-                    println!("Task: {} completed", completed_task.green());
-                }
-                Language::Spanish => {
-                    println!("Tarea: {} completada", completed_task.green());
+                match config.language {
+                    Language::English => {
+                        println!("Task: {} completed", completed_task.green());
+                    }
+                    Language::Spanish => {
+                        println!("Tarea: {} completada", completed_task.green());
+                    }
                 }
             }
+
+            todo.save().context("Failed to save tasks.yml file")?;
         }
 
         Command::Delete(task) => {
@@ -77,7 +84,10 @@ pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
         }
 
         Command::Edit(task) => {
-            let mut edited_task = todo.tasks.get_mut(task.id).context("No such task exists")?;
+            let mut edited_task = todo
+                .tasks
+                .get_mut(task.id)
+                .context(format!("Task {} doesn't exist", task.id))?;
             edited_task.name = task.task.clone();
 
             todo.save().context("Failed to save tasks.yml file")?;

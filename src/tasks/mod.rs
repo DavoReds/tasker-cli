@@ -69,8 +69,6 @@ impl Todo {
     pub fn add_task(&mut self, name: String) -> Result<()> {
         self.tasks.push(Task::new(name));
 
-        self.save()?;
-
         Ok(())
     }
 
