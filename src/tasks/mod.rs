@@ -12,7 +12,7 @@ use anyhow::{anyhow, Context, Result};
 use owo_colors::OwoColorize;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, PartialEq, Eq)]
 pub struct Task {
     name: String,
     done: bool,
@@ -80,19 +80,6 @@ impl Todo {
 
         std::fs::write(file_path, serde_yaml::to_string(&self)?)
             .context("Failed to write tasks file")?;
-
-        Ok(())
-    }
-
-    pub fn clean_tasks(&mut self) -> Result<()> {
-        self.tasks = self
-            .tasks
-            .clone()
-            .into_iter()
-            .filter(|task| !task.done)
-            .collect();
-
-        self.save().context("Failed to save tasks.yml file")?;
 
         Ok(())
     }

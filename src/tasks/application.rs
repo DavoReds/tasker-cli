@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use anyhow::{Context, Result};
 use owo_colors::OwoColorize;
 
-use super::Todo;
+use super::{Task, Todo};
 use crate::{
     cli::Command,
     config::{Config, Language},
@@ -68,19 +68,30 @@ pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
             todo.save().context("Failed to save tasks.yml file")?;
         }
 
-        Command::Delete(task) => {
-            let deleted_task = todo.tasks.remove(task.id).name;
+        Command::Delete(tasks) => {
+            let deleted_tasks: Vec<Task> = tasks
+                .id
+                .iter()
+                .filter_map(|idx| todo.tasks.get(*idx).cloned())
+                .collect();
 
-            todo.save().context("Failed to save tasks.yml file")?;
+            todo.tasks.retain(|task| !deleted_tasks.contains(task));
+
+            let mut deleted_id: Vec<String> = Vec::new();
+            for id in tasks.id.iter() {
+                deleted_id.push(id.to_string());
+            }
+            let deleted_id = deleted_id.join(", ");
 
             match config.language {
                 Language::English => {
-                    println!("Task: {} deleted", deleted_task.red());
+                    println!("Tasks: {} deleted", deleted_id.red());
                 }
                 Language::Spanish => {
-                    println!("Tarea: {} eliminada", deleted_task.red());
+                    println!("Tareas: {} eliminadas", deleted_id.red());
                 }
             }
+            todo.save().context("Failed to save tasks.yml file")?;
         }
 
         Command::Edit(task) => {
@@ -120,7 +131,9 @@ pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
         },
 
         Command::Clean => {
-            todo.clean_tasks().context("Failed to clean tasks.")?;
+            todo.tasks.retain(|task| !task.done);
+
+            todo.save().context("Failed to save tasks.yml file")?;
 
             match config.language {
                 Language::English => {

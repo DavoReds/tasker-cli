@@ -62,7 +62,7 @@ pub struct CompleteTask {
 #[derive(Args, Debug)]
 pub struct DeleteTask {
     /// ID of the task to delete
-    pub id: usize,
+    pub id: Vec<usize>,
 }
 
 #[derive(Args, Debug)]
