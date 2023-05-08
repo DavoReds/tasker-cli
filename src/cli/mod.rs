@@ -7,11 +7,11 @@ use crate::config::Language;
 #[command(author, version, about, long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
-    pub command: Command,
+    pub command: Option<Command>,
 }
 
 /// Subcommands for the application
-#[derive(Subcommand, Debug)]
+#[derive(Subcommand, Debug, Default)]
 pub enum Command {
     /// Creates a new task
     Create(CreateTask),
@@ -28,7 +28,8 @@ pub enum Command {
     /// Cleans all completed tasks
     Clean,
 
-    /// Lists all tasks
+    /// Lists all tasks (Default)
+    #[default]
     List,
 
     /// Configures the application

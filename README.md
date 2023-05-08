@@ -5,8 +5,8 @@
 Tasker CLI is a command line application for keeping track of your daily tasks.
 
 It saves your tasks as local files that can be accessed from
-[Tasker TUI]() and [Tasker](). No personal information is asked or gathered
-by the program.
+[Tasker TUI](https://github.com/DavoReds/tasker-tui) and [Tasker]().
+No personal information is asked or gathered by the program.
 
 ## Installation
 
@@ -22,7 +22,7 @@ Alternatively, you can download a binary from the
 ## Usage
 
 ```bash
-Usage: tasker-cli <COMMAND>
+Usage: tasker-cli [COMMAND]
 
 Commands:
   create    Creates a new task
@@ -30,7 +30,7 @@ Commands:
   complete  Marks a task as complete
   delete    Deletes a task, whether completed or not
   clean     Cleans all completed tasks
-  list      Lists all tasks
+  list      Lists all tasks (Default)
   config    Configures the application
   path      Get path to the configuration file
   help      Print this message or the help of the given subcommand(s)
@@ -48,6 +48,8 @@ Options:
 
 All of the program's configuration is saved within one `.yml` file. You can
 find out where said file is saved with the `path` subcommand.
+
+Only two fields are configurable: `name` and `language`.
 
 ### Example
 

@@ -12,8 +12,11 @@ use crate::{
 
 /// Function that runs the entire program. It pattern matches agains the
 /// command option and performs the appropiate function for each subcommand.
-pub fn tasker_run(config: &Config, args: &Cli, mut todo: Todo) -> Result<()> {
-    match &args.command {
+pub fn tasker_run(config: &Config, args: &mut Cli, mut todo: Todo) -> Result<()> {
+    if args.command.is_none() {
+        args.command = Some(Command::default());
+    }
+    match &args.command.as_ref().context("No argument given")? {
         Command::Config(cfg) => {
             Config::write_config(cfg, todo).context("Failed to change configuration.")?;
 

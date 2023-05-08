@@ -1,6 +1,6 @@
 [package]
 name = "tasker-cli"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 authors = ["Dalia Rojas Vallejo <daliarojasvallejo@proton.me>"]
 description = "A To-Do CLI application for managing your daily tasks"
@@ -16,9 +16,9 @@ categories = ["command-line-utilities"]
 anyhow = "1.0.71"
 clap = { version = "4.2.7", features = ["derive"] }
 confy = { version = "0.5.1", default-features = false, features = ["yaml_conf"] }
-dirs = "5.0.0"
+dirs = "5.0.1"
 owo-colors = { version = "3.5.0", features = ["supports-colors"] }
-serde = { version = "1.0.160", features = ["derive"] }
+serde = { version = "1.0.162", features = ["derive"] }
 serde_yaml = "0.9.21"
 
 [profile.release]

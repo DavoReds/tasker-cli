@@ -12,7 +12,7 @@ use clap::Parser;
 
 fn main() -> Result<()> {
     // Parse command line arguments
-    let cli = Cli::parse();
+    let mut cli = Cli::parse();
 
     // Create .tasker directory if it doesn't exist already.
     // Return the program with an error if it fails.
@@ -28,7 +28,7 @@ fn main() -> Result<()> {
     let todo: Todo = Todo::new()?;
 
     // Run the application
-    tasker_run(&config, &cli, todo)?;
+    tasker_run(&config, &mut cli, todo)?;
 
     Ok(())
 }
