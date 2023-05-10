@@ -80,18 +80,26 @@ pub fn tasker_run(config: &Config, args: &mut Cli, mut todo: Todo) -> Result<()>
 
             todo.tasks.retain(|task| !deleted_tasks.contains(task));
 
-            let mut deleted_id: Vec<String> = Vec::new();
+            let mut deleted_ids: Vec<String> = Vec::new();
             for id in tasks.id.iter() {
-                deleted_id.push(id.to_string());
+                deleted_ids.push(id.to_string());
             }
-            let deleted_id = deleted_id.join(", ");
+            let deleted_tasks = deleted_ids.join(", ");
 
             match config.language {
                 Language::English => {
-                    println!("Tasks: {} deleted", deleted_id.red());
+                    if deleted_ids.len() > 1 {
+                        println!("Tasks: {} deleted", deleted_tasks.red());
+                    } else {
+                        println!("Task: {} deleted", deleted_tasks.red());
+                    }
                 }
                 Language::Spanish => {
-                    println!("Tareas: {} eliminadas", deleted_id.red());
+                    if deleted_ids.len() > 1 {
+                        println!("Tareas: {} eliminadas", deleted_tasks.red());
+                    } else {
+                        println!("Tarea: {} eliminada", deleted_tasks.red());
+                    }
                 }
             }
             todo.save().context("Failed to save tasks.yml file")?;
