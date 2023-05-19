@@ -7,8 +7,8 @@ use crate::config::Language;
 #[command(
     name = "Tasker CLI",
     author,
-    version, 
-    about, 
+    version,
+    about,
     long_about = None,
     help_template = "\
 {before-help}{name} {version}
@@ -24,12 +24,14 @@ pub struct Cli {
 
 /// Subcommands for the application
 #[derive(Subcommand, Debug, Default)]
-#[command(help_template("\
+#[command(help_template(
+    "\
 {name}
 {about-with-newline}
 {usage-heading} {usage}
 
-{all-args}"))]
+{all-args}"
+))]
 pub enum Command {
     /// Creates a new task
     #[command(visible_alias = "cr")]
@@ -53,24 +55,28 @@ pub enum Command {
 
     /// Cleans all completed tasks
     #[command(visible_alias = "cl")]
-    #[command(help_template("\
+    #[command(help_template(
+        "\
 {name}
 {about-with-newline}
 {usage-heading} {usage}
 
-{all-args}"))]
+{all-args}"
+    ))]
     Clean,
 
     /// Lists all tasks [default]
     #[default]
     #[command(alias = "ls")]
     #[command(short_flag = 'l')]
-    #[command(help_template("\
+    #[command(help_template(
+        "\
 {name}
 {about-with-newline}
 {usage-heading} {usage}
 
-{all-args}"))]
+{all-args}"
+    ))]
     List,
 
     /// Configures the application
@@ -84,12 +90,14 @@ pub enum Command {
 }
 
 #[derive(Args, Debug)]
-#[command(help_template("\
+#[command(help_template(
+    "\
 {name}
 {about-with-newline}
 {usage-heading} {usage}
 
-{all-args}"))]
+{all-args}"
+))]
 pub struct CreateTask {
     /// Name of the task(s) separated by commas. Wrap in quotes for multi word
     /// tasks
@@ -97,12 +105,14 @@ pub struct CreateTask {
 }
 
 #[derive(Args, Debug)]
-#[command(help_template("\
+#[command(help_template(
+    "\
 {name}
 {about-with-newline}
 {usage-heading} {usage}
 
-{all-args}"))]
+{all-args}"
+))]
 pub struct EditTask {
     /// ID of the task to edit
     pub id: usize,
@@ -112,36 +122,42 @@ pub struct EditTask {
 }
 
 #[derive(Args, Debug)]
-#[command(help_template("\
+#[command(help_template(
+    "\
 {name}
 {about-with-newline}
 {usage-heading} {usage}
 
-{all-args}"))]
+{all-args}"
+))]
 pub struct CompleteTask {
     /// ID of the task(s) to mark as complete
     pub id: Vec<usize>,
 }
 
 #[derive(Args, Debug)]
-#[command(help_template("\
+#[command(help_template(
+    "\
 {name}
 {about-with-newline}
 {usage-heading} {usage}
 
-{all-args}"))]
+{all-args}"
+))]
 pub struct DeleteTask {
     /// ID of the task(s) to delete
     pub id: Vec<usize>,
 }
 
 #[derive(Args, Debug)]
-#[command(help_template("\
+#[command(help_template(
+    "\
 {name}
 {about-with-newline}
 {usage-heading} {usage}
 
-{all-args}"))]
+{all-args}"
+))]
 pub struct ConfigApp {
     /// Name of the user
     #[arg(short, long)]
