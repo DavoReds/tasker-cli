@@ -20,7 +20,12 @@ pub struct Config {
 /// The language the entire application will use to communicate with the user.
 #[derive(Serialize, Deserialize, Debug, Clone, Copy, Eq, PartialOrd, Ord, PartialEq, ValueEnum)]
 pub enum Language {
+    /// [aliases: e]
+    #[value(alias = "e")]
     English,
+
+    /// [aliases: s]
+    #[value(alias = "s")]
     Spanish,
 }
 
