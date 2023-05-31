@@ -15,7 +15,9 @@ categories = ["command-line-utilities"]
 [dependencies]
 anyhow = "1.0.71"
 clap = { version = "4.3.0", features = ["derive"] }
-confy = { version = "0.5.1", default-features = false, features = ["yaml_conf"] }
+confy = { version = "0.5.1", default-features = false, features = [
+  "yaml_conf",
+] }
 dirs = "5.0.1"
 owo-colors = { version = "3.5.0", features = ["supports-colors"] }
 serde = { version = "1.0.163", features = ["derive"] }
@@ -25,4 +27,4 @@ serde_yaml = "0.9.21"
 strip = true
 lto = true
 codegen-units = 16
-opt-level = "s"
+opt-level = "z"

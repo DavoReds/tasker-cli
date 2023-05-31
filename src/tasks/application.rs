@@ -44,13 +44,12 @@ pub fn tasker_run(config: &Config, args: &mut Cli, mut todo: Todo) -> Result<()>
                     }
                 }
             }
-
-            todo.save()?;
+            todo.save().context("Failed to write tasks file")?;
         }
 
         Command::Complete(tasks) => {
             for task in tasks.id.iter() {
-                let mut completed_task = todo
+                let completed_task = todo
                     .tasks
                     .get_mut(*task)
                     .context(format!("Task {task} doesn't exist"))?;
@@ -106,7 +105,7 @@ pub fn tasker_run(config: &Config, args: &mut Cli, mut todo: Todo) -> Result<()>
         }
 
         Command::Edit(task) => {
-            let mut edited_task = todo
+            let edited_task = todo
                 .tasks
                 .get_mut(task.id)
                 .context(format!("Task {} doesn't exist", task.id))?;
