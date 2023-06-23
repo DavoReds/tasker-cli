@@ -20,7 +20,7 @@ pub struct Task {
 
 impl Task {
     /// Returns a new Task with name `name`, marked as not done.
-    pub fn new(name: String) -> Self {
+    pub const fn new(name: String) -> Self {
         Self { name, done: false }
     }
 }
@@ -60,16 +60,14 @@ impl Todo {
         let mut content = String::new();
 
         match reader.read_to_string(&mut content) {
-            Ok(_) => Ok(serde_yaml::from_str(&content).unwrap_or_else(|_| Todo::default())),
+            Ok(_) => Ok(serde_yaml::from_str(&content).unwrap_or_else(|_| Self::default())),
             Err(e) => Err(anyhow!("{}", e)),
         }
     }
 
     /// Adds a new task to the Todo object.
-    pub fn add_task(&mut self, name: String) -> Result<()> {
+    pub fn add_task(&mut self, name: String) {
         self.tasks.push(Task::new(name));
-
-        Ok(())
     }
 
     /// Saves current Todo object to a file in the application directory.
@@ -91,31 +89,29 @@ impl Display for Todo {
 
         for (id, task) in self.tasks.iter().enumerate() {
             tasks.push_str(&format!("({}): ", id.blue()));
-            tasks.push_str(&format!("{}\n", task));
+            tasks.push_str(&format!("{task}\n"));
 
             match self.language {
-                Language::English => match task.done {
-                    true => {
+                Language::English => {
+                    if task.done {
                         tasks.push_str(&format!("[{}]", "Done".green()));
-                    }
-                    false => {
+                    } else {
                         tasks.push_str(&format!("[{}]", "To Do".red()));
                     }
-                },
-                Language::Spanish => match task.done {
-                    true => {
+                }
+                Language::Spanish => {
+                    if task.done {
                         tasks.push_str(&format!("[{}]", "Hecho".green()));
-                    }
-                    false => {
+                    } else {
                         tasks.push_str(&format!("[{}]", "Por Hacer".red()));
                     }
-                },
+                }
             }
 
             tasks.push('\n');
             tasks.push('\n');
         }
 
-        write!(f, "{}", tasks)
+        write!(f, "{tasks}")
     }
 }

@@ -31,9 +31,8 @@ pub fn tasker_run(config: &Config, args: &mut Cli, mut todo: Todo) -> Result<()>
         }
 
         Command::Create(tasks) => {
-            for task in tasks.tasks.iter() {
-                todo.add_task(task.clone())
-                    .context("Failed to create task.")?;
+            for task in &tasks.tasks {
+                todo.add_task(task.clone());
 
                 match config.language {
                     Language::English => {
@@ -48,7 +47,7 @@ pub fn tasker_run(config: &Config, args: &mut Cli, mut todo: Todo) -> Result<()>
         }
 
         Command::Complete(tasks) => {
-            for task in tasks.id.iter() {
+            for task in &tasks.id {
                 let completed_task = todo
                     .tasks
                     .get_mut(*task)
@@ -80,7 +79,7 @@ pub fn tasker_run(config: &Config, args: &mut Cli, mut todo: Todo) -> Result<()>
             todo.tasks.retain(|task| !deleted_tasks.contains(task));
 
             let mut deleted_ids: Vec<String> = Vec::new();
-            for id in tasks.id.iter() {
+            for id in &tasks.id {
                 deleted_ids.push(id.to_string());
             }
             let deleted_tasks = deleted_ids.join(", ");
@@ -125,18 +124,18 @@ pub fn tasker_run(config: &Config, args: &mut Cli, mut todo: Todo) -> Result<()>
 
         Command::List => match config.language {
             Language::English => {
-                println!(
+                print!(
                     "Good day, {}.\nHere's what you got for today!\n\n{}",
                     config.name.magenta(),
                     todo
                 );
             }
             Language::Spanish => {
-                println!(
+                print!(
                     "Buen día, {}.\n¡Esto es lo que tienes para hoy!\n\n{}",
                     config.name.magenta(),
                     todo
-                )
+                );
             }
         },
 
@@ -169,18 +168,17 @@ pub fn tasker_run(config: &Config, args: &mut Cli, mut todo: Todo) -> Result<()>
     Ok(())
 }
 
-/// Returns path to the program folder. This folder is where all tasks are
-/// saved.
+/// Returns path to the folder in which all tasks are saved.
 pub fn app_directory() -> Option<PathBuf> {
     dirs::home_dir().map(|home| home.join(".tasker"))
 }
 
-/// Creates .tasker directory in user folder.
+/// Creates `.tasker` directory in user folder.
 ///
 /// # Errors
 ///
-/// The function returns an error if the client is not using Windows, MacOS or
-/// Linux.
+/// The function returns an error if the client is not using `Windows`, `MacOS`
+/// or `Linux`.
 pub fn create_app_directory() -> Result<()> {
     let directory = app_directory().context("Not using a supported OS")?;
 

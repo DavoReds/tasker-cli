@@ -46,17 +46,17 @@ impl Default for Config {
 
 impl Config {
     /// Loads the program's configuration file.
-    pub fn load_config() -> Result<Config, confy::ConfyError> {
+    pub fn load_config() -> Result<Self, confy::ConfyError> {
         // It's abstracted away to ensure all three versions of the program
         // use the same config folder
-        let cfg: Config = confy::load("tasker", "tasker_cli")?;
+        let cfg: Self = confy::load("tasker", "tasker_cli")?;
 
         Ok(cfg)
     }
 
     /// Writes configuration file with custom values provided by the user.
     pub fn write_config(config: &ConfigApp, mut todo: Todo) -> anyhow::Result<()> {
-        let configuration = Config {
+        let configuration = Self {
             name: config.name.clone(),
             language: config.language,
         };
