@@ -1,6 +1,6 @@
 [package]
 name = "tasker-cli"
-version = "0.3.3"
+version = "0.3.4"
 edition = "2021"
 authors = ["Dalia Rojas Vallejo <daliarojasvallejo@proton.me>"]
 description = "A To-Do CLI application for managing your daily tasks"
